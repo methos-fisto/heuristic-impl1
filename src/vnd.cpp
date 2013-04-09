@@ -32,7 +32,7 @@ void solve_first(Tour*& best, int** coef, int* ouvert, int* ferme, int taille, i
 					best = voisin;
 				}else if(voisin->getOmega() == best->getOmega())
 				{
-					if(voisin->getValue() < best->getValue())
+					if(voisin->getCost() < best->getCost())
 					{
 						found= true;
 						delete best;
@@ -65,7 +65,7 @@ void solve_first(Tour*& best, int** coef, int* ouvert, int* ferme, int taille, i
 						best = voisin;
 					}else if(voisin->getOmega() == best->getOmega())
 					{
-						if(voisin->getValue() < best->getValue())
+						if(voisin->getCost() < best->getCost())
 						{
 							found= true;
 							delete best;
@@ -106,7 +106,7 @@ void solve_first(Tour*& best, int** coef, int* ouvert, int* ferme, int taille, i
 						best = voisin;
 					}else if(voisin->getOmega() == best->getOmega())
 					{
-						if(voisin->getValue() < best->getValue())
+						if(voisin->getCost() < best->getCost())
 						{
 							found= true;
 							delete best;
@@ -147,7 +147,7 @@ void solve_vnd(Tour*& best, int** coef, int* ouvert, int* ferme, int taille, int
 	int method = 1;
 	Tour* voisin;
 	best = new Tour(taille, seed);
-	best->print_tour();
+	//best->print_tour();
 	best->evaluate(coef,ouvert,ferme);
 	while(!local_opt)
 	{
@@ -166,7 +166,7 @@ void solve_vnd(Tour*& best, int** coef, int* ouvert, int* ferme, int taille, int
 					best = voisin;
 				}else if(voisin->getOmega() == best->getOmega())
 				{
-					if(voisin->getValue() < best->getValue())
+					if(voisin->getCost() < best->getCost())
 					{
 						found= true;
 						delete best;
@@ -199,7 +199,7 @@ void solve_vnd(Tour*& best, int** coef, int* ouvert, int* ferme, int taille, int
 						best = voisin;
 					}else if(voisin->getOmega() == best->getOmega())
 					{
-						if(voisin->getValue() < best->getValue())
+						if(voisin->getCost() < best->getCost())
 						{
 							found= true;
 							delete best;
@@ -240,7 +240,7 @@ void solve_vnd(Tour*& best, int** coef, int* ouvert, int* ferme, int taille, int
 						best = voisin;
 					}else if(voisin->getOmega() == best->getOmega())
 					{
-						if(voisin->getValue() < best->getValue())
+						if(voisin->getCost() < best->getCost())
 						{
 							found= true;
 							delete best;
@@ -295,7 +295,7 @@ void solve_piped_vnd(Tour*& best, int** coef, int* ouvert, int* ferme, int taill
 	int method = 1;
 	Tour* voisin;
 	best = new Tour(taille, seed);
-	best->print_tour();
+	//best->print_tour();
 	best->evaluate(coef,ouvert,ferme);
 	solve_first(best,coef,ouvert,ferme,taille,method);
 
@@ -382,7 +382,7 @@ int main(int argc, char *argv[]){
 		}
 	}
 
-	std::cout << "omega " << best->getOmega() << "  makespan " << best->getValue() << std::endl;
+	std::cout << "omega " << best->getOmega() << "  makespan " << best->getValue() << "  cost  " << best->getCost() << std::endl;
 		best->print_tour();
 	return 0;
 

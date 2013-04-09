@@ -10,12 +10,13 @@ void solve_first(Tour*& best, int** coef, int* ouvert, int* ferme, int taille, i
 	bool local_opt = false;
 	bool found = false;
 	int i, j;
+	//int appels = 0;
 	Tour* voisin;
 	best = new Tour(taille, seed);
-	best->print_tour();
+	//best->print_tour();
 	best->evaluate(coef,ouvert,ferme);
 	while(!local_opt)
-	{
+	{   //appels++;
 		if(method == 1)
 		{
 			i= 1;
@@ -31,7 +32,7 @@ void solve_first(Tour*& best, int** coef, int* ouvert, int* ferme, int taille, i
 					best = voisin;
 				}else if(voisin->getOmega() == best->getOmega())
 				{
-					if(voisin->getValue() < best->getValue())
+					if(voisin->getCost() < best->getCost())
 					{
 						found= true;
 						delete best;
@@ -64,7 +65,7 @@ void solve_first(Tour*& best, int** coef, int* ouvert, int* ferme, int taille, i
 						best = voisin;
 					}else if(voisin->getOmega() == best->getOmega())
 					{
-						if(voisin->getValue() < best->getValue())
+						if(voisin->getCost() < best->getCost())
 						{
 							found= true;
 							delete best;
@@ -105,7 +106,7 @@ void solve_first(Tour*& best, int** coef, int* ouvert, int* ferme, int taille, i
 						best = voisin;
 					}else if(voisin->getOmega() == best->getOmega())
 					{
-						if(voisin->getValue() < best->getValue())
+						if(voisin->getCost() < best->getCost())
 						{
 							found= true;
 							delete best;
@@ -134,7 +135,7 @@ void solve_first(Tour*& best, int** coef, int* ouvert, int* ferme, int taille, i
 			local_opt = true;
 		}
 	}
-
+	//std::cout << "appels " << appels << std::endl;
 }
 
 void solve_best(Tour*& best, int** coef, int* ouvert, int* ferme, int taille, int seed, int method)
@@ -166,7 +167,7 @@ void solve_best(Tour*& best, int** coef, int* ouvert, int* ferme, int taille, in
 					meilleur_voisin = voisin;
 				}else if(voisin->getOmega() == meilleur_voisin->getOmega())
 				{
-					if(voisin->getValue() < meilleur_voisin->getValue())
+					if(voisin->getCost() < meilleur_voisin->getCost())
 					{
 						if(found) // if we don't have found a improving neighbour before, we would delete best
 						{
@@ -204,7 +205,7 @@ void solve_best(Tour*& best, int** coef, int* ouvert, int* ferme, int taille, in
 							meilleur_voisin = voisin;
 						}else if(voisin->getOmega() == meilleur_voisin->getOmega())
 						{
-							if(voisin->getValue() < meilleur_voisin->getValue())
+							if(voisin->getCost() < meilleur_voisin->getCost())
 							{
 								if(found) // if we don't have found a improving neighbour before, we would delete best
 								{
@@ -243,7 +244,7 @@ void solve_best(Tour*& best, int** coef, int* ouvert, int* ferme, int taille, in
 									meilleur_voisin = voisin;
 								}else if(voisin->getOmega() == meilleur_voisin->getOmega())
 								{
-									if(voisin->getValue() < meilleur_voisin->getValue())
+									if(voisin->getCost() < meilleur_voisin->getCost())
 									{
 										if(found) // if we don't have found a improving neighbour before, we would delete best
 										{
@@ -308,6 +309,7 @@ int main(int argc, char *argv[]){
 	int* ouvert;
 	int* ferme;
 	int taille;
+	double temps;
 	int method = 0;
 	int random= 0;
 	if(strcmp(argv[2],"--transpose")==0)
@@ -333,6 +335,7 @@ int main(int argc, char *argv[]){
 	}else{
 		srand(time(NULL));
 		parsing_file(argv[4],coef,ouvert,ferme,taille);
+		crono_start();
 		if(strcmp(argv[1],"--first")==0)
 		{
 			solve_first(best, coef, ouvert, ferme, taille, rand(), method);
@@ -343,8 +346,10 @@ int main(int argc, char *argv[]){
 			std::cout << "Please use ./tsptw-ii --[pivoting rule] --[neighborhood] --init-random instancefile.txt" << std::endl;
 		}
 	}
-
-	std::cout << "omega " << best->getOmega() << "  makespan " << best->getValue() << std::endl;
+	crono_stop();
+	        temps = crono_ms();///1000.0;
+	        std::cout << "temps : " << temps << std::endl << std::endl ;
+	std::cout << "omega " << best->getOmega() << "  makespan " << best->getValue()  << "  cost  " << best->getCost() << std::endl;
 		best->print_tour();
 	return 0;
 

@@ -23,12 +23,14 @@ public:
 	int* getPermutation() const;
 	int getTaille() const;
 	int getValue() const;
+	int getCost() const;
 	void print_tour();
 private:
 	int* permutation_;
 	int omega_;
 	int value_;
 	int taille_;
+	int cost_;
 };
 
 int myrandom(int i);

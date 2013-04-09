@@ -113,17 +113,22 @@ int Tour::getValue() const {
 	return value_;
 }
 
+int Tour::getCost() const {
+	return cost_;
+}
+
 void Tour::evaluate(int** coef, int* ouvert, int* ferme)
 {
 	omega_ = 0;
 	value_ = ouvert[0];
+	cost_ = 0;
 int temp;
 
 	for(int i = 0; i < taille_-1; i++)
 	{
 
 		temp = value_ + coef[permutation_[i]][permutation_[i+1]];
-
+		cost_ += coef[permutation_[i]][permutation_[i+1]];
 		if(temp < ouvert[permutation_[i+1]])
 		{
 			temp = ouvert[permutation_[i+1]];
@@ -138,6 +143,7 @@ int temp;
 	}
 	//std::cout << "dernier\n";
 	temp = value_ + coef[permutation_[taille_-1]][permutation_[0]];
+	cost_ += coef[permutation_[taille_-1]][permutation_[0]];
 	if(temp > ferme[0])
 	{
 		omega_++;
